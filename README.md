@@ -26,7 +26,6 @@ The `Poloidal Flux Interpolator` is a C++ implementation that uses bicubic splin
 2. **Clone the repository**:
     ```bash
     git clone https://github.com/ChaoZhang173/Pflux_interpolation.git
-    cd Pflux_interpolation
     ```
 3. **Include the header file**:
     ```cpp
@@ -35,6 +34,7 @@ The `Poloidal Flux Interpolator` is a C++ implementation that uses bicubic splin
 4. **Create the object and call the function**:
     ```cpp
     FluxInterpolator* interpolator = new FluxInterpolator(filename);
+    // recommend using this function:
     interpolator->evaluatePoloidalFlux(r, z, Pflux);
     // or could use this function: 
     double flux = interpolator->evaluatePoloidalFlux(r, z);
