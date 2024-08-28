@@ -192,7 +192,7 @@ bool FluxInterpolator::readPlasmaData(const std::string &filename) {
     // file.seekg(current_pos, std::ios::beg);
 
     int buff = static_cast<int>(std::ceil(data->nw/5.0));
-    std::cout<<"buff = "<<buff<<std::endl;
+    // std::cout<<"buff = "<<buff<<std::endl;
     file.ignore(4 *(arrayCount * charsPerData + buff) + numCount * charsPerData + 3);
     
     // // Display current file position
