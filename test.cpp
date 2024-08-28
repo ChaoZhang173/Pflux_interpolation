@@ -46,5 +46,7 @@ int main() {
     interpolator->evaluatePoloidalFlux(r1, z1, Pflux);
     std::cout << "Poloidal flux at (" << r1 << ", " << z1 << ") is: " << Pflux << std::endl;
 
+    delete interpolator;
+
     return 0;
 }
