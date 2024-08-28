@@ -57,11 +57,11 @@ bool FluxInterpolator::readPlasmaData(const std::string &filename) {
     double rmaxis, zmaxis, simag, bcentr;
     file >> rmaxis >> zmaxis >> simag >> data->sibry >> bcentr;
 
-    // for debugging
-    const int bufferSize = 16;
-    char buffer[bufferSize];
-    char current_buffer[bufferSize];
-    std::streampos current_pos;
+    // // for debugging
+    // const int bufferSize = 16;
+    // char buffer[bufferSize];
+    // char current_buffer[bufferSize];
+    // std::streampos current_pos;
     // // Display current file position
     // std::cout << "Current file position: " << file.tellg() << std::endl;
     // // Move back 16 bytes
