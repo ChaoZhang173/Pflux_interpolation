@@ -1,40 +1,50 @@
-#include <iostream>
 #include "flux_interp.h"
+#include <iostream>
 
 int main() {
 
-    TokamakData* data = new TokamakData;
-    SplineInterpolation* interp = new SplineInterpolation;
+    std::string filename = "G_DTHMODE24_ITER_MR_00400.TXT";
+    FluxInterpolator* interpolator = new FluxInterpolator(filename);
 
-    // Read data from the file 
-    if (!readTokamakData("G_DTHMODE24_ITER_MR_00400.TXT", *data)) {
-        std::cerr << "Failed to read Tokamak data from the file." << std::endl;
-        delete data;
-        delete interp;
-        return 1;
-    }
+    double r = 6.25742;
+    double z = 1.77172;
+    // should return -11.0815
 
-    // Initialize spline interpolation
-    initSplineInterpolation(*data, *interp);
+    interpolator->printData();
 
-    std::cout<<"rleft = "<<data->rleft<<"; rdim = "<<data->rdim<<"; zmid = "<<data->zmid<<"; zdim = "<<data->zdim<<"; sibry = "<<data->sibry<<std::endl;
-    std::cout<<"r range: "<<interp->r[0]<<"; ~ "<<interp->r[data->nw-1]<<std::endl;
-    std::cout<<"z range: "<<interp->z[0]<<"; ~ "<<interp->z[data->nh-1]<<std::endl;
-    
-    // Test point (r, z) for poloidal flux calculation
-    double r = 5.8; 
-    double z = 1.5; 
-    double Pflux;  
+    double flux = interpolator->evaluatePoloidalFlux(r, z);
+    std::cout << "Poloidal flux at (" << r << ", " << z << ") is: " << flux << std::endl;
 
-    // Get the poloidal flux value at the given (r, z)
-    evaluatePoloidalFlux(r, z, *interp, *data, Pflux);
-    std::cout << "Poloidal flux at (" << r << ", " << z << ") is: " << Pflux << " Wb/rad" << std::endl;
+    double Pflux;
+    interpolator->evaluatePoloidalFlux(r, z, Pflux);
+    std::cout << "Poloidal flux at (" << r << ", " << z << ") is: " << Pflux << std::endl;
 
-    // Clean up
-    freeSplineInterpolation(*interp);
-    freeTokamakData(*data);
-    delete data;
-    delete interp;
+    // test out of plasma boundary
+    double r1 = 3.0;
+    double z1 = 5.0;
+    interpolator->evaluatePoloidalFlux(r1, z1, Pflux);
+    std::cout << "Poloidal flux at (" << r1 << ", " << z1 << ") is: " << Pflux << std::endl;
+
+    r1 = 6.2;
+    z1 = -5.0;
+    interpolator->evaluatePoloidalFlux(r1, z1, Pflux);
+    std::cout << "Poloidal flux at (" << r1 << ", " << z1 << ") is: " << Pflux << std::endl;
+
+    r1 = 8.0;
+    z1 = 3.5;
+    interpolator->evaluatePoloidalFlux(r1, z1, Pflux);
+    std::cout << "Poloidal flux at (" << r1 << ", " << z1 << ") is: " << Pflux << std::endl;
+
+    // test out of the grid boundary
+    r1 = 10.0;
+    z1 = 0.1;
+    interpolator->evaluatePoloidalFlux(r1, z1, Pflux);
+    std::cout << "Poloidal flux at (" << r1 << ", " << z1 << ") is: " << Pflux << std::endl;
+
+    r1 = 5.5;
+    z1 = 10.0;
+    interpolator->evaluatePoloidalFlux(r1, z1, Pflux);
+    std::cout << "Poloidal flux at (" << r1 << ", " << z1 << ") is: " << Pflux << std::endl;
 
     return 0;
 }
